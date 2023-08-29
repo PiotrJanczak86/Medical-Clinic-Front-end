@@ -2,11 +2,13 @@ package com.vaadin.clinicfrontend.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class DoctorDto {
     private String name;
     private String lastname;

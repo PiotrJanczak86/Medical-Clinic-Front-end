@@ -18,7 +18,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @PermitAll
 @AnonymousAllowed
 public class Start extends VerticalLayout {
-    RegisterUser registerUser;
+
     ClinicService clinicService;
     InMemoryUserDetailsManager inMemoryUserDetailsManager;
 
@@ -26,7 +26,6 @@ public class Start extends VerticalLayout {
     public Start(ClinicService clinicService) {
         this.clinicService = clinicService;
         setSpacing(false);
-        registerUser = new RegisterUser(clinicService);
 
         UserDto userDto = new UserDto(null, "log", "pass", "ADMIN");
         JSONObject jsonObject = new JSONObject(userDto);

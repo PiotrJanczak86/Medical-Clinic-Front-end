@@ -11,4 +11,5 @@ public class AdminDto {
     private String name;
     private String lastname;
     private Long userId;
+    private String logs;
 }

@@ -21,7 +21,7 @@ public class UserService {
     UserDto userDto;
 
     public UserDto getUser(String login) {
-        return restTemplate.getForObject("http://localhost:8081/users" + login, UserDto.class);
+        return restTemplate.getForObject("http://localhost:8081/users/" + login, UserDto.class);
     }
     public List<UserDto> getUsers() {
         UserDto[] response = restTemplate.getForObject("http://localhost:8081/users", UserDto[].class);

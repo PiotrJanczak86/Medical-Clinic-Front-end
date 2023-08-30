@@ -129,7 +129,7 @@ public class RegistryForm extends HorizontalLayout {
         TextField lastname = new TextField("Lastname");
         Button register = new Button("Register");
         register.addClickListener(click -> {
-            adminData = new AdminDto(name.getValue(), lastname.getValue(), null);
+            adminData = new AdminDto(name.getValue(), lastname.getValue(), null, "");
             if (!checkIfExists(userData.getLogin())) {
                 userService.createUser(userData.getLogin(), userData.getPassword(), userData.getRole());
                 userData = userService.getUser(userData.getLogin());

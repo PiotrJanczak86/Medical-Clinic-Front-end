@@ -18,8 +18,12 @@ public class AdminService {
 
 
     public void createAdmin(String name, String lastname, Long userId) {
-        adminDto = new AdminDto(name, lastname, userId);
+        adminDto = new AdminDto(name, lastname, userId, "");
         restTemplate.postForObject("http://localhost:8081/admins", setHeader(adminDto), String.class);
+    }
+
+    public AdminDto getAdminDto(Long userId){
+        return restTemplate.getForObject("http://localhost:8081/admins/" + userId, AdminDto.class);
     }
 
     public HttpEntity<String> setHeader(Object object) {

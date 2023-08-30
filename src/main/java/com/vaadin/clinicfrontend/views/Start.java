@@ -4,8 +4,10 @@ import com.vaadin.clinicfrontend.domain.AllergiesDataDto;
 import com.vaadin.clinicfrontend.domain.CovidDataDto;
 import com.vaadin.clinicfrontend.domain.UserDto;
 import com.vaadin.clinicfrontend.service.ExternalAPIsService;
+import com.vaadin.clinicfrontend.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,17 +18,21 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.PermitAll;
 import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @PageTitle("Medical Clinic")
 @Route(value = "", layout = MainLayout.class)
 @PermitAll
 @AnonymousAllowed
 public class Start extends VerticalLayout {
-    ExternalAPIsService service;
+    ExternalAPIsService externalAPIsService;
+    UserService userService;
 
 
-    public Start(ExternalAPIsService service) {
-        this.service = service;
+    public Start(ExternalAPIsService externalAPIsService, UserService userService) {
+        this.externalAPIsService = externalAPIsService;
+        this.userService = userService;
 
         setSpacing(false);
 
@@ -34,7 +40,7 @@ public class Start extends VerticalLayout {
         JSONObject jsonObject = new JSONObject(userDto);
         String body = jsonObject.toString();
 
-        HorizontalLayout stats = new HorizontalLayout(covid((service)), allergies(service));
+        HorizontalLayout stats = new HorizontalLayout(covid((externalAPIsService)), allergies(externalAPIsService));
 
         H2 header = new H2("Welcome to our Medical Clinic");
         header.addClassNames(LumoUtility.Margin.Top.XLARGE, LumoUtility.Margin.Bottom.MEDIUM);
@@ -45,6 +51,17 @@ public class Start extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.START);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.getName().equals("anonymousUser")) {
+            System.out.println("t" + authentication.getName() + "t");
+            String currentRole = userService.getUser(authentication.getName()).getRole();
+            System.out.println(currentRole);
+            if (currentRole.equals("ADMIN")){UI.getCurrent().navigate("admin");
+            }
+        }
     }
 
     private Component covid(ExternalAPIsService service) {
@@ -64,8 +81,8 @@ public class Start extends VerticalLayout {
     private Component allergies(ExternalAPIsService service) {
         AllergiesDataDto allergiesDataDto = service.getAllergiesData();
 
-        Html html = new Html("<span>"+ "Visit our clinic to get treated for allergies.<br/>" +
-                "Statistics from today regarding Warsaw:<br/>"+
+        Html html = new Html("<span>" + "Visit our clinic to get treated for allergies.<br/>" +
+                "Statistics from today regarding Warsaw:<br/>" +
                 "(values shown in units per cubic meter of air)" + "</span>");
 
         Paragraph grass = new Paragraph("Grass: " + allergiesDataDto.getGrassValue() + " Category: " + allergiesDataDto.getGrass());

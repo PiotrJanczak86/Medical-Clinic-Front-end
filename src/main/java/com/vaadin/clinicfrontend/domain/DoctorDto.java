@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class DoctorDto {
+    private Long id;
     private String name;
     private String lastname;
     private String specialization;

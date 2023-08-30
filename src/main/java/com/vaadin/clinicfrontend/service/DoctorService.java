@@ -36,12 +36,23 @@ public class DoctorService {
                 .orElse(Collections.emptyList());
     }
 
+    public List<DoctorDto> getDoctors(){
+        DoctorDto[] response = restTemplate.getForObject("http://localhost:8081/doctors", DoctorDto[].class);
+        return Optional.ofNullable(response)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
+    }
+
     public DoctorDto getDoctorDto(Long userId){
-        return restTemplate.getForObject("http://localhost:8081/doctors/" + userId, DoctorDto.class);
+        return restTemplate.getForObject("http://localhost:8081/doctors/user/" + userId, DoctorDto.class);
+    }
+
+    public DoctorDto getDoctorById(Long id){
+        return restTemplate.getForObject("http://localhost:8081/doctors/" + id, DoctorDto.class);
     }
 
     public void createDoctor(String name, String lastname, String spec, Long userId, String mail) {
-        doctorDto = new DoctorDto(name, lastname, spec, userId, mail, new ArrayList<>(), new ArrayList<>());
+        doctorDto = new DoctorDto(null, name, lastname, spec, userId, mail, new ArrayList<>(), new ArrayList<>());
         restTemplate.postForObject("http://localhost:8081/doctors", setHeader(doctorDto), String.class);
     }
 

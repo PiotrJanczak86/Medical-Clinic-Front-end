@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PatientDto {
+    private Long id;
     private String name;
     private String lastname;
     private int pesel;

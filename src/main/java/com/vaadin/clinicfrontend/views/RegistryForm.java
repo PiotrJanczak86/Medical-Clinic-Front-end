@@ -85,8 +85,8 @@ public class RegistryForm extends HorizontalLayout {
         TextField mail = new TextField("Email");
         Button register = new Button("Register");
         register.addClickListener(click -> {
-            patientData = new PatientDto(name.getValue(), lastname.getValue(),
-                    Integer.parseInt(pesel.getValue()), null, mail.getValue(), null);
+            patientData = new PatientDto(null, name.getValue(), lastname.getValue(),
+                    Integer.parseInt(pesel.getValue()), null, mail.getValue(), new ArrayList<>());
             if (!checkIfExists(userData.getLogin())) {
                 userService.createUser(userData.getLogin(), userData.getPassword(), userData.getRole());
                 userData = userService.getUser(userData.getLogin());
@@ -108,8 +108,8 @@ public class RegistryForm extends HorizontalLayout {
         TextField mail = new TextField("Email");
         Button register = new Button("Register");
         register.addClickListener(click -> {
-            doctorData = new DoctorDto(name.getValue(), lastname.getValue(),
-                    spec.getValue(), null, mail.getValue(), null, null);
+            doctorData = new DoctorDto(null, name.getValue(), lastname.getValue(),
+                    spec.getValue(), null, mail.getValue(), new ArrayList<>(), new ArrayList<>());
             if (!checkIfExists(userData.getLogin())) {
                 userService.createUser(userData.getLogin(), userData.getPassword(), userData.getRole());
                 userData = userService.getUser(userData.getLogin());

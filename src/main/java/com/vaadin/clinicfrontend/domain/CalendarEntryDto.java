@@ -9,6 +9,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Data
 public class CalendarEntryDto {
+    private Long id;
     private Long doctorId;
     private LocalDate date;
     private LocalTime from;

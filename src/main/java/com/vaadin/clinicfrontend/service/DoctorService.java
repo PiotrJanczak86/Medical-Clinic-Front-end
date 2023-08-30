@@ -1,7 +1,6 @@
 package com.vaadin.clinicfrontend.service;
 
-import com.vaadin.clinicfrontend.domain.AdminDto;
-import com.vaadin.clinicfrontend.domain.DoctorDto;
+import com.vaadin.clinicfrontend.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -10,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +18,22 @@ public class DoctorService {
 
     DoctorDto doctorDto;
 
-    public AdminDto getAdminDto(Long userId){
-        return restTemplate.getForObject("http://localhost:8081/admins/" + userId, AdminDto.class);
+    public List<VisitDto> getVisitsByDoctor(Long userId){
+        VisitDto[] response = restTemplate.getForObject("http://localhost:8081/visits/doctor/" + userId, VisitDto[].class);
+        return Optional.ofNullable(response)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
+    }
+
+    public CalendarEntryDto getEntry(Long id){
+        return restTemplate.getForObject("http://localhost:8081/calendar", CalendarEntryDto.class);
+    }
+
+    public List<UserDto> getUsers() {
+        UserDto[] response = restTemplate.getForObject("http://localhost:8081/users", UserDto[].class);
+        return Optional.ofNullable(response)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
     }
 
     public DoctorDto getDoctorDto(Long userId){
@@ -30,6 +43,10 @@ public class DoctorService {
     public void createDoctor(String name, String lastname, String spec, Long userId, String mail) {
         doctorDto = new DoctorDto(name, lastname, spec, userId, mail, new ArrayList<>(), new ArrayList<>());
         restTemplate.postForObject("http://localhost:8081/doctors", setHeader(doctorDto), String.class);
+    }
+
+    public void createSchedule(CalendarEntryDto calendarEntryDto){
+        restTemplate.postForObject("http://localhost:8081/calendar/schedule", setHeader(calendarEntryDto), String.class);
     }
 
     public HttpEntity<String> setHeader(Object object) {

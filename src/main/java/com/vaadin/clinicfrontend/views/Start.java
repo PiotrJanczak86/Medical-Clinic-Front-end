@@ -93,14 +93,11 @@ public class Start extends VerticalLayout {
             System.out.println(currentRole);
             if (currentRole.equals("ADMIN")) {
                 UI.getCurrent().navigate("admin");
-                UI.getCurrent().navigate("admin");
             }
             if (currentRole.equals("DOCTOR")) {
                 UI.getCurrent().navigate("doctor");
-                UI.getCurrent().navigate("doctor");
             }
             if (currentRole.equals("PATIENT")) {
-                UI.getCurrent().navigate("patient");
                 UI.getCurrent().navigate("patient");
             }
         }

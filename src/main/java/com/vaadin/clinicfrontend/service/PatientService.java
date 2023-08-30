@@ -19,7 +19,11 @@ private final RestTemplate restTemplate;
     PatientDto patientDto;
 
     public PatientDto getPatientDto(Long userId){
-        return restTemplate.getForObject("http://localhost:8081/patients/" + userId, PatientDto.class);
+        return restTemplate.getForObject("http://localhost:8081/patients/user/" + userId, PatientDto.class);
+    }
+
+    public PatientDto getPatientById(Long id){
+        return restTemplate.getForObject("http://localhost:8081/patients/" + id, PatientDto.class);
     }
 
     public void createPatient(String name, String lastname, int pesel, Long userId, String mail) {

@@ -12,7 +12,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-@Route("admin")
+@Route(value = "admin", layout = MainLayout.class)
 @PageTitle("Admin panel")
 @RolesAllowed({"ADMIN"})
 public class AdminView extends VerticalLayout {

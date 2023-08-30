@@ -11,7 +11,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-@Route("patient")
+@Route(value = "patient", layout = MainLayout.class)
 @PageTitle("Patient Panel")
 @RolesAllowed({"PATIENT"})
 public class PatientView extends VerticalLayout {

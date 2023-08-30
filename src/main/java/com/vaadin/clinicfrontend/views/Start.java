@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class Start extends VerticalLayout {
     ExternalAPIsService externalAPIsService;
     UserService userService;
+    Authentication authentication;
 
 
     public Start(ExternalAPIsService externalAPIsService, UserService userService) {
@@ -35,7 +36,7 @@ public class Start extends VerticalLayout {
         this.userService = userService;
 
         setSpacing(false);
-
+        navigate();
         UserDto userDto = new UserDto(null, "log", "pass", "ADMIN");
         JSONObject jsonObject = new JSONObject(userDto);
         String body = jsonObject.toString();
@@ -52,16 +53,6 @@ public class Start extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
 
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.getName().equals("anonymousUser")) {
-            System.out.println("t" + authentication.getName() + "t");
-            String currentRole = userService.getUser(authentication.getName()).getRole();
-            System.out.println(currentRole);
-            if (currentRole.equals("ADMIN")){UI.getCurrent().navigate("admin");
-            }
-        }
     }
 
     private Component covid(ExternalAPIsService service) {
@@ -91,5 +82,28 @@ public class Start extends VerticalLayout {
         Paragraph tree = new Paragraph("Tree allergens: " + allergiesDataDto.getTreeValue() + " Category: " + allergiesDataDto.getTree());
         VerticalLayout allergies = new VerticalLayout(html, grass, mold, ragweed, tree);
         return allergies;
+    }
+
+    public void navigate() {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.getName().equals("anonymousUser")) {
+            System.out.println("t" + authentication.getName() + "t");
+            String currentRole = userService.getUser(authentication.getName()).getRole();
+            System.out.println(currentRole);
+            if (currentRole.equals("ADMIN")) {
+                UI.getCurrent().navigate("admin");
+                UI.getCurrent().navigate("admin");
+            }
+            if (currentRole.equals("DOCTOR")) {
+                UI.getCurrent().navigate("doctor");
+                UI.getCurrent().navigate("doctor");
+            }
+            if (currentRole.equals("PATIENT")) {
+                UI.getCurrent().navigate("patient");
+                UI.getCurrent().navigate("patient");
+            }
+        }
+
     }
 }

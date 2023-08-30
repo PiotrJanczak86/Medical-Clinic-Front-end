@@ -1,5 +1,6 @@
 package com.vaadin.clinicfrontend.service;
 
+import com.vaadin.clinicfrontend.domain.AdminDto;
 import com.vaadin.clinicfrontend.domain.PatientDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -17,6 +18,9 @@ public class PatientService {
 private final RestTemplate restTemplate;
     PatientDto patientDto;
 
+    public PatientDto getPatientDto(Long userId){
+        return restTemplate.getForObject("http://localhost:8081/patients/" + userId, PatientDto.class);
+    }
 
     public void createPatient(String name, String lastname, int pesel, Long userId, String mail) {
         patientDto = new PatientDto(name, lastname, pesel, userId, mail, new ArrayList<>());

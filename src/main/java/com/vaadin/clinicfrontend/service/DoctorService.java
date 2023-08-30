@@ -1,5 +1,6 @@
 package com.vaadin.clinicfrontend.service;
 
+import com.vaadin.clinicfrontend.domain.AdminDto;
 import com.vaadin.clinicfrontend.domain.DoctorDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -18,7 +19,13 @@ public class DoctorService {
 
     DoctorDto doctorDto;
 
+    public AdminDto getAdminDto(Long userId){
+        return restTemplate.getForObject("http://localhost:8081/admins/" + userId, AdminDto.class);
+    }
 
+    public DoctorDto getDoctorDto(Long userId){
+        return restTemplate.getForObject("http://localhost:8081/doctors/" + userId, DoctorDto.class);
+    }
 
     public void createDoctor(String name, String lastname, String spec, Long userId, String mail) {
         doctorDto = new DoctorDto(name, lastname, spec, userId, mail, new ArrayList<>(), new ArrayList<>());

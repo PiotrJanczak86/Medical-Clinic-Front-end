@@ -11,7 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +37,8 @@ public class ClinicService {
         return (Boolean.TRUE.equals(restTemplate.getForObject("http://localhost:8081/users/check/" + login, Boolean.class)));
     }
 
-    public void createPatient(String name, String lastname, int pesel, Long userId, String mail){
-        patientDto = new PatientDto(name,lastname,pesel,userId,mail,new ArrayList<>());
+    public void createPatient(String name, String lastname, int pesel, Long userId, String mail) {
+        patientDto = new PatientDto(name, lastname, pesel, userId, mail, new ArrayList<>());
         restTemplate.postForObject("http://localhost:8081/patients", setHeader(patientDto), String.class);
     }
 
@@ -46,21 +46,31 @@ public class ClinicService {
         doctorDto = new DoctorDto(name, lastname, spec, userId, mail, new ArrayList<>(), new ArrayList<>());
         restTemplate.postForObject("http://localhost:8081/doctors", setHeader(doctorDto), String.class);
     }
+
     public void createAdmin(String name, String lastname, Long userId) {
         adminDto = new AdminDto(name, lastname, userId);
         restTemplate.postForObject("http://localhost:8081/admins", setHeader(adminDto), String.class);
     }
 
-    public UserDto getUser(String login){
-        return restTemplate.getForObject("http://localhost:8081/users/"+login,UserDto.class);
+    public UserDto getUser(String login) {
+        return restTemplate.getForObject("http://localhost:8081/users" + login, UserDto.class);
     }
 
-    public HttpEntity<String> setHeader(Object object){
+    public List<UserDto> getUsers() {
+        UserDto[] response = restTemplate.getForObject("http://localhost:8081/users", UserDto[].class);
+        return Optional.ofNullable(response)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
+    }
+
+    public HttpEntity<String> setHeader(Object object) {
         JSONObject jsonObject = new JSONObject(object);
         String body = jsonObject.toString();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(body, headers);
     }
+
+
 
 }

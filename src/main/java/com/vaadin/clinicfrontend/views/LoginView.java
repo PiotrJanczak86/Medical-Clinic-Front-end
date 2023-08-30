@@ -1,7 +1,7 @@
 package com.vaadin.clinicfrontend.views;
 
 import com.vaadin.clinicfrontend.domain.UserDto;
-import com.vaadin.clinicfrontend.service.ClinicService;
+import com.vaadin.clinicfrontend.service.UserService;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,13 +21,13 @@ import java.util.List;
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-    ClinicService clinicService;
+    UserService userService;
     InMemoryUserDetailsManager inMemoryUserDetailsManager;
     private LoginForm login = new LoginForm();
 
-    public LoginView(InMemoryUserDetailsManager inMemoryUserDetailsManager, ClinicService clinicService) {
+    public LoginView(InMemoryUserDetailsManager inMemoryUserDetailsManager, UserService userService) {
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
-        this.clinicService = clinicService;
+        this.userService = userService;
 
         addClassName("login-view");
         setSizeFull();
@@ -50,9 +50,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         }
     }
 
-
     public void addUsersToMemory() {
-        List<UserDto> users = clinicService.getUsers();
+        List<UserDto> users = userService.getUsers();
         for (UserDto user : users) {
             UserDetails userToAdd =
                     User.withUsername(user.getLogin())
